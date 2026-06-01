@@ -279,7 +279,7 @@ export default function Login() {
                 <Box component="form" onSubmit={handleLogin}>
                   <TextField
                     fullWidth
-                    label="Username"
+                    label="Username or Email"
                     value={loginData.username}
                     onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
                     InputProps={inputProps(PersonRoundedIcon)}

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import select
+from sqlalchemy import select, or_, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
@@ -43,7 +43,14 @@ async def register(user_data: UserCreate, db: AsyncSession = Depends(get_db)) ->
 
 @router.post("/login", response_model=Token)
 async def login(user_data: UserLogin, db: AsyncSession = Depends(get_db)) -> Token:
-    result = await db.execute(select(User).where(User.username == user_data.username))
+    result = await db.execute(
+        select(User).where(
+            or_(
+                func.lower(User.username) == func.lower(user_data.username),
+                func.lower(User.email) == func.lower(user_data.username)
+            )
+        )
+    )
     user = result.scalar_one_or_none()
     if user is None or not verify_password(user_data.password, user.hashed_password):
         raise HTTPException(
@@ -52,7 +59,7 @@ async def login(user_data: UserLogin, db: AsyncSession = Depends(get_db)) -> Tok
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    access_token = create_access_token(data={"sub": user.username})
+    access_token = create_access_token(data={"sub": str(user.id), "username": user.username})
     return Token(access_token=access_token, token_type="bearer")
 
 
