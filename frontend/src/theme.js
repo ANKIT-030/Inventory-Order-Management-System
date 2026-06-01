@@ -66,7 +66,6 @@ const getTheme = (mode) => {
             backgroundAttachment: 'fixed',
           },
           'input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active': {
-            WebkitBoxShadow: isDark ? '0 0 0 30px #1e293b inset !important' : '0 0 0 30px #f8fafc inset !important',
             WebkitTextFillColor: isDark ? '#f1f5f9 !important' : '#0f172a !important',
             transition: 'background-color 5000s ease-in-out 0s',
           },
