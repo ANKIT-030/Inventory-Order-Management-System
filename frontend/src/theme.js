@@ -64,6 +64,7 @@ const getTheme = (mode) => {
               ? 'radial-gradient(ellipse at 20% 50%, rgba(99,102,241,0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(236,72,153,0.06) 0%, transparent 50%), radial-gradient(ellipse at 50% 100%, rgba(16,185,129,0.05) 0%, transparent 50%)'
               : 'radial-gradient(ellipse at 20% 50%, rgba(99,102,241,0.04) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(236,72,153,0.03) 0%, transparent 50%), radial-gradient(ellipse at 50% 100%, rgba(16,185,129,0.02) 0%, transparent 50%)',
             backgroundAttachment: 'fixed',
+          },
         },
       },
       MuiCard: {
