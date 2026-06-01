@@ -1,5 +1,6 @@
 import os
 import ssl
+import uuid
 from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
@@ -18,6 +19,7 @@ if "supabase" in settings.DATABASE_URL or os.getenv("VERCEL"):
         "server_settings": {"search_path": "public"},
         "prepared_statement_cache_size": 0,
         "statement_cache_size": 0,
+        "prepared_statement_name_func": lambda: f"__asyncpg_{uuid.uuid4()}__",
     }
     poolclass = NullPool
 
