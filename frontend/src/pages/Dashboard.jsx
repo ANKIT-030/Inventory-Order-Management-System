@@ -15,6 +15,7 @@ import {
   Skeleton,
   Chip,
   Alert,
+  useTheme,
 } from '@mui/material';
 import InventoryRoundedIcon from '@mui/icons-material/InventoryRounded';
 import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
@@ -124,19 +125,20 @@ function AnimatedNumber({ value, prefix = '', duration = 1200 }) {
   return <>{formatted}</>;
 }
 
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active, payload, label, isDark }) => {
   if (active && payload && payload.length) {
     return (
       <Box
         sx={{
-          background: '#1a1f2e',
-          border: '1px solid rgba(255,255,255,0.1)',
+          background: isDark ? '#1a1f2e' : '#ffffff',
+          border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)',
           p: 1.5,
           borderRadius: 2,
+          boxShadow: isDark ? 'none' : '0 4px 20px rgba(0,0,0,0.1)'
         }}
       >
-        <Typography sx={{ color: 'rgba(255,255,255,0.7)', mb: 0.5 }}>{label}</Typography>
-        <Typography sx={{ color: '#fff', fontWeight: 'bold' }}>
+        <Typography sx={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)', mb: 0.5 }}>{label}</Typography>
+        <Typography sx={{ color: isDark ? '#fff' : '#000', fontWeight: 'bold' }}>
           {payload[0].name === 'revenue' ? '₹' : ''}
           {payload[0].value.toLocaleString('en-IN')}
         </Typography>
@@ -147,6 +149,11 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 export default function Dashboard() {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+  const chartTextColor = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
+  const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+
   const { enqueueSnackbar } = useSnackbar();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -298,10 +305,10 @@ export default function Dashboard() {
                           <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
-                      <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'rgba(255,255,255,0.7)', fontSize: 12 }} dy={10} />
-                      <YAxis axisLine={false} tickLine={false} tick={{ fill: 'rgba(255,255,255,0.7)', fontSize: 12 }} dx={-10} tickFormatter={(value) => `₹${value}`} />
-                      <Tooltip content={<CustomTooltip />} />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
+                      <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: chartTextColor, fontSize: 12 }} dy={10} />
+                      <YAxis axisLine={false} tickLine={false} tick={{ fill: chartTextColor, fontSize: 12 }} dx={-10} tickFormatter={(value) => `₹${value}`} />
+                      <Tooltip content={<CustomTooltip isDark={isDark} />} />
                       <Area type="monotone" dataKey="revenue" stroke="#6366f1" strokeWidth={3} fillOpacity={1} fill="url(#colorRevenue)" />
                     </AreaChart>
                   </ResponsiveContainer>
@@ -358,11 +365,11 @@ export default function Dashboard() {
                           <Cell key={`cell-${index}`} fill={STATUS_COLORS[entry.status.toLowerCase()] || '#8884d8'} />
                         ))}
                       </Pie>
-                      <Tooltip content={<CustomTooltip />} />
+                      <Tooltip content={<CustomTooltip isDark={isDark} />} />
                       <Legend 
                         verticalAlign="bottom" 
                         height={36} 
-                        formatter={(value) => <span style={{ color: 'rgba(255,255,255,0.7)', textTransform: 'capitalize' }}>{value}</span>}
+                        formatter={(value) => <span style={{ color: chartTextColor, textTransform: 'capitalize' }}>{value}</span>}
                       />
                     </PieChart>
                   </ResponsiveContainer>
@@ -407,10 +414,10 @@ export default function Dashboard() {
                 <Box sx={{ height: 300, width: '100%' }}>
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={data.top_products} layout="vertical" margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-                      <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.05)" />
-                      <XAxis type="number" axisLine={false} tickLine={false} tick={{ fill: 'rgba(255,255,255,0.7)', fontSize: 12 }} />
-                      <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: 'rgba(255,255,255,0.7)', fontSize: 12 }} width={120} />
-                      <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255,255,255,0.05)' }} />
+                      <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke={gridColor} />
+                      <XAxis type="number" axisLine={false} tickLine={false} tick={{ fill: chartTextColor, fontSize: 12 }} />
+                      <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: chartTextColor, fontSize: 12 }} width={120} />
+                      <Tooltip content={<CustomTooltip isDark={isDark} />} cursor={{ fill: gridColor }} />
                       <Bar dataKey="total_sold" fill="#10b981" radius={[0, 4, 4, 0]} barSize={20} />
                     </BarChart>
                   </ResponsiveContainer>
