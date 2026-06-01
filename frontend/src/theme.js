@@ -67,7 +67,7 @@ const getTheme = (mode) => {
           },
           'input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active': {
             WebkitTextFillColor: isDark ? '#f1f5f9 !important' : '#0f172a !important',
-            transition: 'background-color 5000s ease-in-out 0s !important',
+            WebkitBoxShadow: isDark ? '0 0 0 100px #0a0e1a inset !important' : '0 0 0 100px #ffffff inset !important',
           },
         },
       },
@@ -116,8 +116,8 @@ const getTheme = (mode) => {
         styleOverrides: {
           input: {
             '&:-webkit-autofill': {
-              transition: 'background-color 5000s ease-in-out 0s !important',
-              WebkitTransition: 'background-color 5000s ease-in-out 0s !important',
+              WebkitBoxShadow: isDark ? '0 0 0 100px #0a0e1a inset !important' : '0 0 0 100px #ffffff inset !important',
+              WebkitTextFillColor: isDark ? '#f1f5f9 !important' : '#0f172a !important',
             },
           },
         },
