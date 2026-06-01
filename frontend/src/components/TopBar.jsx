@@ -63,7 +63,9 @@ export default function TopBar({ onMenuToggle }) {
           sx={{
             flexGrow: 1,
             fontWeight: 700,
-            background: 'linear-gradient(135deg, #f1f5f9 0%, #94a3b8 100%)',
+            background: mode === 'dark' 
+              ? 'linear-gradient(135deg, #f1f5f9 0%, #94a3b8 100%)' 
+              : 'linear-gradient(135deg, #0f172a 0%, #334155 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
           }}
