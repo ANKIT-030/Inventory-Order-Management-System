@@ -19,7 +19,7 @@ import {
 import InventoryRoundedIcon from '@mui/icons-material/InventoryRounded';
 import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
-import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
+import CurrencyRupeeRoundedIcon from '@mui/icons-material/CurrencyRupeeRounded';
 import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
@@ -69,7 +69,7 @@ const statCards = [
   {
     key: 'total_revenue',
     label: 'Total Revenue',
-    icon: AttachMoneyRoundedIcon,
+    icon: CurrencyRupeeRoundedIcon,
     gradient: 'linear-gradient(135deg, #f59e0b 0%, #f97316 100%)',
     shadow: 'rgba(245,158,11,0.3)',
     prefix: '₹',
