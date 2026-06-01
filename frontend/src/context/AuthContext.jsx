@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useMemo, useCallback } from 'react';
+import React, { createContext, useContext, useState, useMemo, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 
@@ -36,6 +36,22 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem('token'));
   const [user, setUser] = useState(() => getUserFromToken(localStorage.getItem('token')));
 
+  const fetchProfile = useCallback(async () => {
+    if (!token) return;
+    try {
+      const response = await api.get('/auth/me');
+      setUser(response.data);
+    } catch (err) {
+      console.error('Failed to fetch profile', err);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      fetchProfile();
+    }
+  }, [token, fetchProfile]);
+
   const login = useCallback(
     async (username, password) => {
       const response = await api.post('/auth/login', { username, password });
@@ -43,6 +59,7 @@ export function AuthProvider({ children }) {
       localStorage.setItem('token', access_token);
       setToken(access_token);
       setUser(getUserFromToken(access_token));
+      // fetchProfile will be called via useEffect
       navigate('/dashboard');
     },
     [navigate]
@@ -63,8 +80,8 @@ export function AuthProvider({ children }) {
   const isAuthenticated = useMemo(() => !!token, [token]);
 
   const value = useMemo(
-    () => ({ user, token, login, register, logout, isAuthenticated }),
-    [user, token, login, register, logout, isAuthenticated]
+    () => ({ user, token, login, register, logout, isAuthenticated, fetchProfile }),
+    [user, token, login, register, logout, isAuthenticated, fetchProfile]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

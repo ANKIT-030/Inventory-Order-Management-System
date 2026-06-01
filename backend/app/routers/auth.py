@@ -3,8 +3,9 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
+from app.dependencies import get_current_user
 from app.models.user import User
-from app.schemas.user import Token, UserCreate, UserLogin, UserResponse
+from app.schemas.user import Token, UserCreate, UserLogin, UserResponse, UserUpdateProfile, UserUpdatePassword
 from app.services.auth import create_access_token, hash_password, verify_password
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
@@ -53,3 +54,47 @@ async def login(user_data: UserLogin, db: AsyncSession = Depends(get_db)) -> Tok
 
     access_token = create_access_token(data={"sub": user.username})
     return Token(access_token=access_token, token_type="bearer")
+
+
+@router.get("/me", response_model=UserResponse)
+async def get_my_profile(current_user: User = Depends(get_current_user)):
+    return current_user
+
+
+@router.put("/profile", response_model=UserResponse)
+async def update_profile(
+    update_data: UserUpdateProfile,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    if update_data.username and update_data.username != current_user.username:
+        result = await db.execute(select(User).where(User.username == update_data.username))
+        if result.scalar_one_or_none():
+            raise HTTPException(status_code=400, detail="Username already taken")
+        current_user.username = update_data.username
+
+    if update_data.email and update_data.email != current_user.email:
+        result = await db.execute(select(User).where(User.email == update_data.email))
+        if result.scalar_one_or_none():
+            raise HTTPException(status_code=400, detail="Email already taken")
+        current_user.email = update_data.email
+
+    db.add(current_user)
+    await db.commit()
+    await db.refresh(current_user)
+    return current_user
+
+
+@router.put("/password")
+async def change_password(
+    password_data: UserUpdatePassword,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    if not verify_password(password_data.current_password, current_user.hashed_password):
+        raise HTTPException(status_code=400, detail="Incorrect current password")
+    
+    current_user.hashed_password = hash_password(password_data.new_password)
+    db.add(current_user)
+    await db.commit()
+    return {"message": "Password updated successfully"}

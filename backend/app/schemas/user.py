@@ -26,3 +26,13 @@ class UserResponse(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+
+class UserUpdateProfile(BaseModel):
+    username: str | None = None
+    email: str | None = None
+
+
+class UserUpdatePassword(BaseModel):
+    current_password: str
+    new_password: str

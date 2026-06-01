@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
 import ProductList from './pages/products/ProductList';
 import CustomerList from './pages/customers/CustomerList';
 import OrderList from './pages/orders/OrderList';
@@ -21,6 +22,7 @@ function App() {
           <Route path="/orders" element={<OrderList />} />
           <Route path="/orders/new" element={<OrderForm />} />
           <Route path="/orders/:id" element={<OrderDetail />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
