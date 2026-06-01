@@ -63,3 +63,20 @@ api_v1.include_router(dashboard.router)
 api_v1.include_router(exports.router)
 
 app.include_router(api_v1)
+
+
+@app.get("/debug")
+async def debug_info():
+    import os
+    db_url = os.getenv("DATABASE_URL", "NOT SET")
+    # Mask the password for safety
+    if "@" in db_url:
+        parts = db_url.split("@")
+        masked = parts[0][:20] + "***@" + parts[-1]
+    else:
+        masked = db_url[:30] + "..."
+    return {
+        "database_url_set": db_url != "NOT SET",
+        "database_url_preview": masked,
+        "vercel_env": os.getenv("VERCEL", "NOT SET"),
+    }
