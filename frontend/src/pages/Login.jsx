@@ -284,7 +284,7 @@ export default function Login() {
                     onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
                     InputProps={inputProps(PersonRoundedIcon)}
                     sx={{ mb: 2.5 }}
-                    autoComplete="username"
+                    autoComplete="off"
                   />
                   <TextField
                     fullWidth
@@ -311,7 +311,7 @@ export default function Login() {
                       ),
                     }}
                     sx={{ mb: 1.5 }}
-                    autoComplete="current-password"
+                    autoComplete="new-password"
                   />
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 3 }}>
                     <Button
@@ -367,7 +367,7 @@ export default function Login() {
                     }
                     InputProps={inputProps(PersonRoundedIcon)}
                     sx={{ mb: 2.5 }}
-                    autoComplete="username"
+                    autoComplete="off"
                   />
                   <TextField
                     fullWidth
@@ -379,7 +379,7 @@ export default function Login() {
                     }
                     InputProps={inputProps(EmailRoundedIcon)}
                     sx={{ mb: 2.5 }}
-                    autoComplete="email"
+                    autoComplete="off"
                   />
                   <TextField
                     fullWidth
@@ -455,7 +455,7 @@ export default function Login() {
                     onChange={(e) => setForgotPasswordEmail(e.target.value)}
                     InputProps={inputProps(EmailRoundedIcon)}
                     sx={{ mb: 3 }}
-                    autoComplete="email"
+                    autoComplete="off"
                   />
                   <Button
                     type="submit"
