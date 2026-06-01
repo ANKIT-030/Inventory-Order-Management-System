@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
 from app.dependencies import get_current_user
 from app.models.user import User
-from app.schemas.user import Token, UserCreate, UserLogin, UserResponse, UserUpdateProfile, UserUpdatePassword
+from app.schemas.user import Token, UserCreate, UserLogin, UserResponse, UserUpdateProfile, UserUpdatePassword, ForgotPasswordRequest
 from app.services.auth import create_access_token, hash_password, verify_password
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
@@ -98,3 +98,20 @@ async def change_password(
     db.add(current_user)
     await db.commit()
     return {"message": "Password updated successfully"}
+
+
+@router.post("/forgot-password")
+async def forgot_password(
+    request: ForgotPasswordRequest,
+    db: AsyncSession = Depends(get_db)
+):
+    # For a real application, we would generate a secure token here and email it to the user.
+    # We simulate this flow by always returning a success message to prevent email enumeration.
+    
+    # We can check if the user exists (just for internal logic, but we still return success)
+    # result = await db.execute(select(User).where(User.email == request.email))
+    # user = result.scalar_one_or_none()
+    # if user:
+    #     print(f"Simulating sending password reset email to {user.email}")
+        
+    return {"message": "If an account with that email exists, a password reset link has been sent."}

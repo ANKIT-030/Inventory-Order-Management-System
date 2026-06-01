@@ -21,6 +21,7 @@ import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
 import InventoryRoundedIcon from '@mui/icons-material/InventoryRounded';
 import { useSnackbar } from 'notistack';
 import { useAuth } from '../context/AuthContext';
+import api from '../api/axios';
 
 export default function Login() {
   const { login, register } = useAuth();
@@ -32,6 +33,7 @@ export default function Login() {
 
   const [loginData, setLoginData] = useState({ username: '', password: '' });
   const [registerData, setRegisterData] = useState({ username: '', email: '', password: '' });
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -73,6 +75,30 @@ export default function Login() {
       setLoginData({ username: registerData.username, password: '' });
     } catch (err) {
       const msg = err.response?.data?.detail || 'Registration failed. Please try again.';
+      enqueueSnackbar(msg, { variant: 'error' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    if (!forgotPasswordEmail) {
+      enqueueSnackbar('Please enter your email', { variant: 'warning' });
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(forgotPasswordEmail)) {
+      enqueueSnackbar('Please enter a valid email', { variant: 'warning' });
+      return;
+    }
+    setLoading(true);
+    try {
+      const response = await api.post('/auth/forgot-password', { email: forgotPasswordEmail });
+      enqueueSnackbar(response.data.message || 'Reset link sent!', { variant: 'success' });
+      setTab(0);
+      setForgotPasswordEmail('');
+    } catch (err) {
+      const msg = err.response?.data?.detail || 'Failed to send reset link.';
       enqueueSnackbar(msg, { variant: 'error' });
     } finally {
       setLoading(false);
@@ -216,29 +242,31 @@ export default function Login() {
             </Box>
 
             {/* Tabs */}
-            <Tabs
-              value={tab}
-              onChange={(_, v) => setTab(v)}
-              variant="fullWidth"
-              sx={{
-                mb: 3,
-                '& .MuiTabs-indicator': {
-                  background: 'linear-gradient(90deg, #6366f1, #ec4899)',
-                  height: 3,
-                  borderRadius: 2,
-                },
-                '& .MuiTab-root': {
-                  textTransform: 'none',
-                  fontWeight: 600,
-                  fontSize: '0.95rem',
-                  color: 'text.secondary',
-                  '&.Mui-selected': { color: 'text.primary' },
-                },
-              }}
-            >
-              <Tab label="Sign In" />
-              <Tab label="Sign Up" />
-            </Tabs>
+            {tab !== 2 && (
+              <Tabs
+                value={tab}
+                onChange={(_, v) => setTab(v)}
+                variant="fullWidth"
+                sx={{
+                  mb: 3,
+                  '& .MuiTabs-indicator': {
+                    background: 'linear-gradient(90deg, #6366f1, #ec4899)',
+                    height: 3,
+                    borderRadius: 2,
+                  },
+                  '& .MuiTab-root': {
+                    textTransform: 'none',
+                    fontWeight: 600,
+                    fontSize: '0.95rem',
+                    color: 'text.secondary',
+                    '&.Mui-selected': { color: 'text.primary' },
+                  },
+                }}
+              >
+                <Tab label="Sign In" />
+                <Tab label="Sign Up" />
+              </Tabs>
+            )}
 
             {/* Login Form */}
             {tab === 0 && (
@@ -277,9 +305,23 @@ export default function Login() {
                         </InputAdornment>
                       ),
                     }}
-                    sx={{ mb: 3.5 }}
+                    sx={{ mb: 1.5 }}
                     autoComplete="current-password"
                   />
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 3 }}>
+                    <Button
+                      variant="text"
+                      size="small"
+                      onClick={() => setTab(2)}
+                      sx={{
+                        textTransform: 'none',
+                        color: 'text.secondary',
+                        '&:hover': { color: 'primary.main', background: 'transparent' }
+                      }}
+                    >
+                      Forgot Password?
+                    </Button>
+                  </Box>
                   <Button
                     type="submit"
                     fullWidth
@@ -385,6 +427,67 @@ export default function Login() {
                     }}
                   >
                     {loading ? <CircularProgress size={24} color="inherit" /> : 'Create Account'}
+                  </Button>
+                </Box>
+              </Fade>
+            )}
+
+            {/* Forgot Password Form */}
+            {tab === 2 && (
+              <Fade in key="forgot-password">
+                <Box component="form" onSubmit={handleForgotPassword}>
+                  <Typography variant="h6" sx={{ mb: 1, fontWeight: 600, textAlign: 'center' }}>
+                    Reset Password
+                  </Typography>
+                  <Typography variant="body2" sx={{ mb: 3, color: 'text.secondary', textAlign: 'center' }}>
+                    Enter your email address and we'll send you a link to reset your password.
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    label="Email Address"
+                    type="email"
+                    value={forgotPasswordEmail}
+                    onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                    InputProps={inputProps(EmailRoundedIcon)}
+                    sx={{ mb: 3 }}
+                    autoComplete="email"
+                  />
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    size="large"
+                    disabled={loading}
+                    sx={{
+                      py: 1.5,
+                      mb: 2,
+                      fontSize: '1rem',
+                      background: 'linear-gradient(135deg, #10b981 0%, #14b8a6 100%)',
+                      boxShadow: '0 8px 30px rgba(16,185,129,0.3)',
+                      '&:hover': {
+                        background: 'linear-gradient(135deg, #059669 0%, #0d9488 100%)',
+                        boxShadow: '0 12px 40px rgba(16,185,129,0.4)',
+                        transform: 'translateY(-1px)',
+                      },
+                      '&:disabled': {
+                        background: 'rgba(16,185,129,0.3)',
+                      },
+                    }}
+                  >
+                    {loading ? <CircularProgress size={24} color="inherit" /> : 'Send Reset Link'}
+                  </Button>
+                  <Button
+                    fullWidth
+                    variant="text"
+                    onClick={() => setTab(0)}
+                    disabled={loading}
+                    sx={{
+                      textTransform: 'none',
+                      color: 'text.secondary',
+                      '&:hover': { color: 'text.primary', background: 'rgba(255,255,255,0.05)' }
+                    }}
+                  >
+                    Back to Sign In
                   </Button>
                 </Box>
               </Fade>
