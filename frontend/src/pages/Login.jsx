@@ -21,11 +21,14 @@ import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
 import InventoryRoundedIcon from '@mui/icons-material/InventoryRounded';
 import { useSnackbar } from 'notistack';
 import { useAuth } from '../context/AuthContext';
+import { useAppTheme } from '../context/ThemeContext';
 import api from '../api/axios';
 
 export default function Login() {
   const { login, register } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
+  const { mode } = useAppTheme();
+  const isDark = mode === 'dark';
 
   const [tab, setTab] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
@@ -134,7 +137,7 @@ export default function Login() {
           right: 0,
           bottom: 0,
           zIndex: 0,
-          background: '#0a0e1a',
+          background: isDark ? '#0a0e1a' : '#f8fafc',
           '&::before': {
             content: '""',
             position: 'absolute',
@@ -198,11 +201,13 @@ export default function Login() {
             width: '100%',
             position: 'relative',
             zIndex: 1,
-            background: 'rgba(17, 24, 39, 0.75)',
+            background: isDark ? 'rgba(17, 24, 39, 0.75)' : 'rgba(255, 255, 255, 0.75)',
             backdropFilter: 'blur(24px)',
-            border: '1px solid rgba(255,255,255,0.08)',
+            border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)',
             borderRadius: '24px',
-            boxShadow: '0 32px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.02)',
+            boxShadow: isDark 
+              ? '0 32px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.02)' 
+              : '0 32px 64px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.02)',
             overflow: 'visible',
           }}
         >
@@ -258,8 +263,8 @@ export default function Login() {
                     textTransform: 'none',
                     fontWeight: 600,
                     fontSize: '0.95rem',
-                    color: 'text.secondary',
-                    '&.Mui-selected': { color: 'text.primary' },
+                    color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
+                    '&.Mui-selected': { color: isDark ? '#fff' : '#000' },
                   },
                 }}
               >
@@ -484,7 +489,7 @@ export default function Login() {
                     sx={{
                       textTransform: 'none',
                       color: 'text.secondary',
-                      '&:hover': { color: 'text.primary', background: 'rgba(255,255,255,0.05)' }
+                      '&:hover': { color: 'text.primary', background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }
                     }}
                   >
                     Back to Sign In
