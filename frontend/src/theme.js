@@ -67,7 +67,7 @@ const getTheme = (mode) => {
           },
           'input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active': {
             WebkitTextFillColor: isDark ? '#f1f5f9 !important' : '#0f172a !important',
-            transition: 'background-color 5000s ease-in-out 0s',
+            transition: 'background-color 5000s ease-in-out 0s !important',
           },
         },
       },
@@ -109,6 +109,16 @@ const getTheme = (mode) => {
         styleOverrides: {
           root: {
             backgroundImage: 'none',
+          },
+        },
+      },
+      MuiInputBase: {
+        styleOverrides: {
+          input: {
+            '&:-webkit-autofill': {
+              transition: 'background-color 5000s ease-in-out 0s !important',
+              WebkitTransition: 'background-color 5000s ease-in-out 0s !important',
+            },
           },
         },
       },
