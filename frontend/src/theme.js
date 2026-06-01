@@ -65,6 +65,11 @@ const getTheme = (mode) => {
               : 'radial-gradient(ellipse at 20% 50%, rgba(99,102,241,0.04) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(236,72,153,0.03) 0%, transparent 50%), radial-gradient(ellipse at 50% 100%, rgba(16,185,129,0.02) 0%, transparent 50%)',
             backgroundAttachment: 'fixed',
           },
+          'input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active': {
+            WebkitBoxShadow: isDark ? '0 0 0 30px #1e293b inset !important' : '0 0 0 30px #f8fafc inset !important',
+            WebkitTextFillColor: isDark ? '#f1f5f9 !important' : '#0f172a !important',
+            transition: 'background-color 5000s ease-in-out 0s',
+          },
         },
       },
       MuiCard: {
