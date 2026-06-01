@@ -14,7 +14,9 @@ from app.middleware import RequestIDMiddleware, RequestLoggingMiddleware
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
-    await create_tables()
+    import os
+    if not os.getenv("VERCEL"):
+        await create_tables()
     yield
     # Shutdown (no-op)
 
