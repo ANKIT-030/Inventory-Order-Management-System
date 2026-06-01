@@ -4,13 +4,13 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
 import App from './App';
-import theme from './theme';
+import { AppThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
-      <ThemeProvider theme={theme}>
+      <AppThemeProvider>
         <CssBaseline />
         <SnackbarProvider
           maxSnack={3}
@@ -21,7 +21,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <App />
           </AuthProvider>
         </SnackbarProvider>
-      </ThemeProvider>
+      </AppThemeProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

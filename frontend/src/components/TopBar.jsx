@@ -11,7 +11,10 @@ import {
 } from '@mui/material';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
+import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import { useAuth } from '../context/AuthContext';
+import { useAppTheme } from '../context/ThemeContext';
 import { DRAWER_WIDTH } from './Sidebar';
 
 const routeTitles = {
@@ -30,6 +33,7 @@ function getPageTitle(pathname) {
 
 export default function TopBar({ onMenuToggle }) {
   const { user } = useAuth();
+  const { mode, toggleColorMode } = useAppTheme();
   const location = useLocation();
   const title = getPageTitle(location.pathname);
 
@@ -40,9 +44,9 @@ export default function TopBar({ onMenuToggle }) {
       sx={{
         width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
         ml: { md: `${DRAWER_WIDTH}px` },
-        background: 'rgba(10, 14, 26, 0.7)',
+        background: mode === 'dark' ? 'rgba(10, 14, 26, 0.7)' : 'rgba(255, 255, 255, 0.7)',
         backdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        borderBottom: mode === 'dark' ? '1px solid rgba(255,255,255,0.05)' : '1px solid rgba(0,0,0,0.05)',
       }}
     >
       <Toolbar sx={{ px: { xs: 2, sm: 3 } }}>
@@ -66,6 +70,10 @@ export default function TopBar({ onMenuToggle }) {
         >
           {title}
         </Typography>
+
+        <IconButton onClick={toggleColorMode} sx={{ mr: 2, color: 'text.primary' }}>
+          {mode === 'dark' ? <LightModeRoundedIcon /> : <DarkModeRoundedIcon />}
+        </IconButton>
 
         <Chip
           avatar={

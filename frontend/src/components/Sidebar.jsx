@@ -21,6 +21,7 @@ import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { useAuth } from '../context/AuthContext';
+import { useAppTheme } from '../context/ThemeContext';
 
 const DRAWER_WIDTH = 280;
 
@@ -33,6 +34,7 @@ const navItems = [
 
 function SidebarContent({ onClose }) {
   const { logout } = useAuth();
+  const { mode } = useAppTheme();
   const location = useLocation();
 
   return (
@@ -41,9 +43,9 @@ function SidebarContent({ onClose }) {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        background: 'rgba(10, 14, 26, 0.95)',
+        background: mode === 'dark' ? 'rgba(10, 14, 26, 0.95)' : 'rgba(255, 255, 255, 0.95)',
         backdropFilter: 'blur(20px)',
-        borderRight: '1px solid rgba(255,255,255,0.05)',
+        borderRight: mode === 'dark' ? '1px solid rgba(255,255,255,0.05)' : '1px solid rgba(0,0,0,0.05)',
       }}
     >
       {/* Logo */}
@@ -91,7 +93,7 @@ function SidebarContent({ onClose }) {
         )}
       </Box>
 
-      <Divider sx={{ borderColor: 'rgba(255,255,255,0.05)' }} />
+      <Divider sx={{ borderColor: mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }} />
 
       {/* Nav Items */}
       <List sx={{ px: 2, py: 2, flex: 1 }}>
@@ -120,7 +122,7 @@ function SidebarContent({ onClose }) {
                   '&:hover': {
                     background: isActive
                       ? 'linear-gradient(135deg, rgba(99,102,241,0.25) 0%, rgba(236,72,153,0.15) 100%)'
-                      : 'rgba(255,255,255,0.04)',
+                      : mode === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)',
                     transform: 'translateX(4px)',
                   },
                 }}
@@ -159,7 +161,7 @@ function SidebarContent({ onClose }) {
         })}
       </List>
 
-      <Divider sx={{ borderColor: 'rgba(255,255,255,0.05)' }} />
+      <Divider sx={{ borderColor: mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }} />
 
       {/* Logout */}
       <Box sx={{ px: 2, py: 2 }}>
