@@ -202,7 +202,7 @@ export default function Dashboard() {
                       mb: 2,
                     }}
                   >
-                    <Box>
+                    <Box sx={{ minWidth: 0, flex: 1, pr: 1 }}>
                       <Typography
                         variant="body2"
                         sx={{
@@ -215,7 +215,8 @@ export default function Dashboard() {
                         {card.label}
                       </Typography>
                       <Typography
-                        variant="h3"
+                        variant="h4"
+                        noWrap
                         sx={{
                           fontWeight: 700,
                           letterSpacing: '-0.02em',

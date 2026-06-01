@@ -68,7 +68,7 @@ export default function TopBar({ onMenuToggle }) {
 
   return (
     <AppBar
-      position="sticky"
+      position="static"
       elevation={0}
       sx={{
         width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
