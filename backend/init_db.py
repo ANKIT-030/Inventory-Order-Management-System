@@ -15,6 +15,10 @@ async def init_db():
         "DATABASE_URL", 
         "postgresql+asyncpg://postgres:postgres@localhost:5432/inventory_db"
     )
+    if database_url.startswith("postgres://"):
+        database_url = database_url.replace("postgres://", "postgresql+asyncpg://", 1)
+    elif database_url.startswith("postgresql://"):
+        database_url = database_url.replace("postgresql://", "postgresql+asyncpg://", 1)
     
     print(f"Connecting to database at {database_url.split('@')[-1]}...")
     
