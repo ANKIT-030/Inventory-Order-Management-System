@@ -66,8 +66,10 @@ app.include_router(api_v1)
 
 
 @app.get("/debug")
-async def debug_info():
+async def debug_info(db: AsyncSession = Depends(get_db)):
     import os
+    import traceback
+    
     db_url = os.getenv("DATABASE_URL", "NOT SET")
     # Mask the password for safety
     if "@" in db_url:
@@ -75,8 +77,19 @@ async def debug_info():
         masked = parts[0][:20] + "***@" + parts[-1]
     else:
         masked = db_url[:30] + "..."
+        
+    db_error = None
+    db_connected = False
+    try:
+        await db.execute(text("SELECT 1"))
+        db_connected = True
+    except Exception as e:
+        db_error = str(e)
+        
     return {
         "database_url_set": db_url != "NOT SET",
         "database_url_preview": masked,
         "vercel_env": os.getenv("VERCEL", "NOT SET"),
+        "db_connected": db_connected,
+        "db_error": db_error,
     }
