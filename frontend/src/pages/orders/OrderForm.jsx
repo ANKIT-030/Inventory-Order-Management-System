@@ -276,7 +276,7 @@ export default function OrderForm() {
                         </TableCell>
                         {/* Price */}
                         <TableCell align="right">
-                          <Typography>${item.price.toFixed(2)}</Typography>
+                          <Typography>₹{item.price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Typography>
                         </TableCell>
                         {/* Quantity input */}
                         <TableCell align="right">
@@ -307,7 +307,7 @@ export default function OrderForm() {
                         {/* Line Total */}
                         <TableCell align="right">
                           <Typography sx={{ fontWeight: 600 }}>
-                            ${((item.quantity || 0) * item.price).toFixed(2)}
+                            ₹{((item.quantity || 0) * item.price).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                           </Typography>
                         </TableCell>
                         {/* Remove Row */}
@@ -348,7 +348,7 @@ export default function OrderForm() {
                       WebkitTextFillColor: 'transparent',
                     }}
                   >
-                    ${grandTotal.toFixed(2)}
+                    ₹{grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </Typography>
                 </Box>
               </Box>

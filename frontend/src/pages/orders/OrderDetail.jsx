@@ -230,14 +230,14 @@ export default function OrderDetail() {
                           </Typography>
                         </TableCell>
                         <TableCell align="right">
-                          <Typography>${Number(item.unit_price).toFixed(2)}</Typography>
+                          <Typography>₹{Number(item.unit_price).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Typography>
                         </TableCell>
                         <TableCell align="right">
                           <Typography>{item.quantity}</Typography>
                         </TableCell>
                         <TableCell align="right" sx={{ pr: 0 }}>
                           <Typography sx={{ fontWeight: 600 }}>
-                            ${(Number(item.unit_price) * item.quantity).toFixed(2)}
+                            ₹{(Number(item.unit_price) * item.quantity).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                           </Typography>
                         </TableCell>
                       </TableRow>
@@ -268,7 +268,7 @@ export default function OrderDetail() {
                       WebkitTextFillColor: 'transparent',
                     }}
                   >
-                    ${Number(order.total_amount).toFixed(2)}
+                    ₹{Number(order.total_amount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </Typography>
                 </Box>
               </Box>
